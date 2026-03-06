@@ -1,4 +1,4 @@
-FROM oven/bun:1 AS css
+FROM oven/bun:1-alpine AS css
 
 WORKDIR /app
 COPY package.json bun.lock ./
