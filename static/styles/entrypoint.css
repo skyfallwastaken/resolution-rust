@@ -1,37 +1,59 @@
-@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Lilex:ital,wght@0,100..700;1,100..700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap");
 
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 @source "./templates";
 
 @theme {
-  --font-sans: "Lato", system-ui, sans-serif;
-  --font-mono: "Lilex", monospace;
+  --font-sans: "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
 }
 
 pre,
 code {
-  font-family: "Lilex", monospace !important;
-  font-size: 16px !important;
+  font-family: "JetBrains Mono", monospace !important;
+  font-size: 15px !important;
 }
 
-/* Rose Pine Dawn */
+pre,
+pre[class*="language-"] {
+  background: var(--color-surface) !important;
+  border: 1px solid var(--color-highlight-med) !important;
+  border-radius: 0.75rem !important;
+  text-shadow: none !important;
+}
+
+code,
+code[class*="language-"] {
+  text-shadow: none !important;
+}
+
+.line-highlight,
+pre[class*="language-"] .line-highlight,
+pre[class*="language-"] > code > .token {
+  background: none !important;
+}
+
+pre[class*="language-"] > code {
+  background: none !important;
+}
+
 @theme {
-  --color-base: hsl(249deg, 22%, 12%);
-  --color-surface: hsl(247deg, 23%, 15%);
-  --color-overlay: hsl(248deg, 25%, 18%);
-  --color-muted: hsl(249deg, 12%, 47%);
-  --color-subtle: hsl(248deg, 15%, 61%);
-  --color-text: hsl(245deg, 50%, 91%);
-  --color-love: hsl(343deg, 76%, 68%);
-  --color-gold: hsl(35deg, 88%, 72%);
-  --color-rose: hsl(2deg, 55%, 83%);
-  --color-pine: hsl(197deg, 49%, 38%);
-  --color-foam: hsl(189deg, 43%, 73%);
-  --color-iris: hsl(267deg, 57%, 78%);
-  --color-highlight-low: hsl(244deg, 18%, 15%);
-  --color-highlight-med: hsl(249deg, 15%, 28%);
-  --color-highlight-high: hsl(248deg, 13%, 36%);
+  --color-base: hsl(230deg, 25%, 9%);
+  --color-surface: hsl(228deg, 22%, 12%);
+  --color-overlay: hsl(226deg, 20%, 16%);
+  --color-muted: hsl(225deg, 14%, 40%);
+  --color-subtle: hsl(223deg, 16%, 56%);
+  --color-text: hsl(220deg, 40%, 93%);
+  --color-love: hsl(355deg, 75%, 65%);
+  --color-gold: hsl(40deg, 90%, 68%);
+  --color-rose: hsl(15deg, 70%, 78%);
+  --color-pine: hsl(175deg, 50%, 40%);
+  --color-foam: hsl(170deg, 45%, 68%);
+  --color-iris: hsl(220deg, 65%, 72%);
+  --color-highlight-low: hsl(228deg, 20%, 13%);
+  --color-highlight-med: hsl(226deg, 16%, 22%);
+  --color-highlight-high: hsl(224deg, 14%, 32%);
 }
 
 @utility prose {
@@ -68,4 +90,14 @@ code {
   --tw-prose-invert-pre-bg: var(--color-text);
   --tw-prose-invert-th-borders: var(--color-subtle);
   --tw-prose-invert-td-borders: var(--color-muted);
+}
+
+/* Page transitions */
+html.is-changing .transition-fade {
+  transition: opacity 0.125s;
+  opacity: 1;
+}
+
+html.is-animating .transition-fade {
+  opacity: 0;
 }

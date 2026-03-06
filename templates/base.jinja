@@ -1,16 +1,25 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
     <title>{% block title %}Resolution Rust{% endblock %}</title>
+
     <link href="/static/styles/tailwind.css" rel="stylesheet" />
 
     <link
-	  rel="stylesheet"
-	  href="https://cdn.jsdelivr.net/gh/rose-pine/prism@refs/heads/main/dist/prism-moon.css"
-	/>
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/prism-themes@1/themes/prism-one-dark.min.css"
+    />
   </head>
+
   <body class="bg-base text-text">
-    <main>{% block content %}{% endblock %}</main>
+    <main id="swup" class="transition-fade">
+      {% block content %}{% endblock %}
+    </main>
 
     <script
       defer
@@ -30,7 +39,29 @@
     ></script>
     <script
       defer
+      src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"
+    ></script>
+    <script
+      defer
       src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-json.min.js"
     ></script>
+
+    <script type="module">
+      import Swup from "https://unpkg.com/swup@4?module";
+      import SwupHeadPlugin from "https://unpkg.com/@swup/head-plugin@2?module";
+
+      const swup = new Swup({
+        plugins: [new SwupHeadPlugin()],
+      });
+
+      const highlight = () => {
+        if (window.Prism) {
+          window.Prism.highlightAll();
+        }
+      };
+
+      window.addEventListener("load", highlight);
+      swup.hooks.on("page:view", highlight);
+    </script>
   </body>
 </html>
