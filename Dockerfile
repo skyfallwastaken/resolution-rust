@@ -6,7 +6,7 @@ RUN bun install --frozen-lockfile
 
 COPY static/styles/entrypoint.css static/styles/entrypoint.css
 COPY templates templates
-RUN bunx tailwindcss -i ./static/styles/entrypoint.css -o ./static/styles/tailwind.css
+RUN ./node_modules/.bin/tailwindcss -i ./static/styles/entrypoint.css -o ./static/styles/tailwind.css
 
 FROM rust:1-bookworm AS chef
 RUN cargo install cargo-chef
