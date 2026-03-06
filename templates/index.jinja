@@ -1,0 +1,44 @@
+{% extends "base.jinja" %}
+
+{% block content %}
+    <div class="mx-auto max-w-3xl px-6 py-20 sm:px-8 sm:py-28">
+        <header class="mb-16 text-center">
+            <p class="mb-4 font-mono text-sm text-iris">hack club resolution!</p>
+            <h1 class="mb-4 text-5xl font-bold tracking-tight text-text sm:text-6xl">
+                Learn Rust
+            </h1>
+            <p class="mx-auto max-w-lg text-lg leading-relaxed text-subtle">
+                A week-by-week pathway to go from zero to building real projects in Rust.
+            </p>
+        </header>
+
+        <section id="weeks">
+            <h2 class="mb-1 font-mono text-xs tracking-widest text-muted uppercase">Pathway</h2>
+            <div class="mb-8 h-px bg-highlight-med"></div>
+
+            <ol class="space-y-4 list-none p-0">
+                {% for article in articles %}
+                    <li>
+                        <a
+                            href="/{{ article.slug }}"
+                            class="group flex items-baseline gap-4 rounded-xl border border-transparent px-4 py-4 transition hover:border-highlight-med hover:bg-surface"
+                        >
+                            <span class="font-mono text-sm tabular-nums text-muted transition group-hover:text-iris">
+                                0{{ article.week }}
+                            </span>
+                            <div class="min-w-0">
+                                <h3 class="text-lg font-semibold text-text transition group-hover:text-iris">
+                                    {{ article.title }}
+                                </h3>
+                                <p class="mt-1 text-sm leading-relaxed text-muted">
+                                    {{ article.description }}
+                                </p>
+                            </div>
+                            <span class="ml-auto text-highlight-high opacity-0 transition group-hover:opacity-100" aria-hidden="true">→</span>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ol>
+        </section>
+    </div>
+{% endblock %}

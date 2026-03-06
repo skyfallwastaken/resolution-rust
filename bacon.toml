@@ -1,0 +1,4 @@
+[jobs.serve]
+command = ["cargo", "run"]
+watch = ["src", "content", "templates"]
+need_stdout = true

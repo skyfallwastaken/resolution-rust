@@ -1,0 +1,21 @@
+[package]
+name = "resolution_rust"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+axum = { version = "0.8.8", features = ["macros"] }
+comrak = "0.50.0"
+tokio = { version = "1.50.0", features = ["macros", "rt-multi-thread", "fs"] }
+tracing = "0.1.44"
+tracing-subscriber = "0.3.22"
+askama_web = { version = "0.15.1", features = ["axum-0.8"] }
+askama = "0.15.4"
+markdown = "1.0.0"
+color-eyre = "0.6.5"
+serde = { version = "1.0.228", features = ["derive"] }
+serde_yaml = "0.9.34"
+tower-livereload = "0.10.3"
+rust-embed = "8.11.0"
+mime_guess = "2.0.5"
+syntect = "5.3.0"

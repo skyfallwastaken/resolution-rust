@@ -1,0 +1,71 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Lilex:ital,wght@0,100..700;1,100..700&display=swap");
+
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@source "./templates";
+
+@theme {
+  --font-sans: "Lato", system-ui, sans-serif;
+  --font-mono: "Lilex", monospace;
+}
+
+pre,
+code {
+  font-family: "Lilex", monospace !important;
+  font-size: 16px !important;
+}
+
+/* Rose Pine Dawn */
+@theme {
+  --color-base: hsl(249deg, 22%, 12%);
+  --color-surface: hsl(247deg, 23%, 15%);
+  --color-overlay: hsl(248deg, 25%, 18%);
+  --color-muted: hsl(249deg, 12%, 47%);
+  --color-subtle: hsl(248deg, 15%, 61%);
+  --color-text: hsl(245deg, 50%, 91%);
+  --color-love: hsl(343deg, 76%, 68%);
+  --color-gold: hsl(35deg, 88%, 72%);
+  --color-rose: hsl(2deg, 55%, 83%);
+  --color-pine: hsl(197deg, 49%, 38%);
+  --color-foam: hsl(189deg, 43%, 73%);
+  --color-iris: hsl(267deg, 57%, 78%);
+  --color-highlight-low: hsl(244deg, 18%, 15%);
+  --color-highlight-med: hsl(249deg, 15%, 28%);
+  --color-highlight-high: hsl(248deg, 13%, 36%);
+}
+
+@utility prose {
+  --tw-prose-body: var(--color-text);
+  --tw-prose-headings: var(--color-text);
+  --tw-prose-lead: var(--color-subtle);
+  --tw-prose-links: var(--color-iris);
+  --tw-prose-bold: var(--color-text);
+  --tw-prose-counters: var(--color-rose);
+  --tw-prose-bullets: var(--color-muted);
+  --tw-prose-hr: var(--color-highlight-med);
+  --tw-prose-quotes: var(--color-text);
+  --tw-prose-quote-borders: var(--color-highlight-high);
+  --tw-prose-captions: var(--color-muted);
+  --tw-prose-code: var(--color-love);
+  --tw-prose-pre-code: var(--color-text);
+  --tw-prose-pre-bg: rgb(35, 33, 54);
+  --tw-prose-th-borders: var(--color-highlight-med);
+  --tw-prose-td-borders: var(--color-highlight-low);
+
+  --tw-prose-invert-body: var(--color-overlay);
+  --tw-prose-invert-headings: var(--color-surface);
+  --tw-prose-invert-lead: var(--color-highlight-high);
+  --tw-prose-invert-links: var(--color-foam);
+  --tw-prose-invert-bold: var(--color-surface);
+  --tw-prose-invert-counters: var(--color-gold);
+  --tw-prose-invert-bullets: var(--color-muted);
+  --tw-prose-invert-hr: var(--color-subtle);
+  --tw-prose-invert-quotes: var(--color-surface);
+  --tw-prose-invert-quote-borders: var(--color-muted);
+  --tw-prose-invert-captions: var(--color-highlight-high);
+  --tw-prose-invert-code: var(--color-rose);
+  --tw-prose-invert-pre-code: var(--color-overlay);
+  --tw-prose-invert-pre-bg: var(--color-text);
+  --tw-prose-invert-th-borders: var(--color-subtle);
+  --tw-prose-invert-td-borders: var(--color-muted);
+}

@@ -1,0 +1,28 @@
+{% extends "base.jinja" %}
+
+{% block title %}{{ article.title }} - Resolution Rust{% endblock %}
+
+{% block content %}
+    <a href="/" class="fixed top-6 left-6 inline-flex items-center gap-2 text-subtle transition hover:text-text">
+        <span aria-hidden="true">←</span> Back
+    </a>
+    <div class="prose lg:prose-lg prose container max-w-3xl mx-auto my-24">
+        <h1 class="mb-0!">{{ article.title }}</h1>
+        <p>{{ article.description }}</p>
+        <hr/>
+
+        {{ article.html|safe }}
+
+        <div class="bg-surface px-6 py-8 rounded-md border border-muted/20 text-center">
+            <h2 class="my-0!">Ready to submit?</h2>
+            <p>We'll take you to the Resolution site to get it shipped!</p>
+            <a
+                href="https://resolution.hackclub.com/app/pathway/rust/week/{{ article.week }}/ship"
+                class="block bg-iris px-4 py-3 rounded-xl border border-subtle text-base no-underline transition hover:brightness-115 hover:border-iris/60"
+                target="_blank"
+            >
+                let's ship it!
+            </a>
+        </div>
+    </div>
+{% endblock %}
