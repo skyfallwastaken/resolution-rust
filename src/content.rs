@@ -8,13 +8,14 @@ pub struct Article {
     pub title: String,
     pub description: String,
     pub html: String,
-    pub week: usize,
+    pub week: Option<usize>,
     pub slug: String,
+    pub category: String,
 }
 
 impl Article {
-    pub async fn from_slug(slug: String) -> Result<Self> {
-        let source = fs::read_to_string(format!("content/{slug}.md")).await?;
+    pub async fn from_path(category: String, slug: String) -> Result<Self> {
+        let source = fs::read_to_string(format!("content/{category}/{slug}.md")).await?;
 
         let mut opts = Options::gfm();
         opts.parse.constructs.frontmatter = true;
@@ -29,23 +30,13 @@ impl Article {
                     yaml = Some(node.value.clone());
                     false
                 }
-                // Node::Code(node) => {
-                //     let html = highlight_code(&node.value, node.lang.as_deref())
-                //         .wrap_err("failed to highlight code")
-                //         .unwrap();
-                //     *child = Node::Html(markdown::mdast::Html {
-                //         value: html,
-                //         position: node.position.clone(),
-                //     });
-                //     true
-                // }
                 _ => true,
             });
         }
 
         let meta: Frontmatter =
-            serde_yaml::from_str(&yaml.ok_or(eyre!("no frontmatter in {slug}.md!"))?)?;
-        let html = to_html_with_options(&source, &opts).unwrap(); // TODO: remove the unwrap
+            serde_yaml::from_str(&yaml.ok_or(eyre!("no frontmatter in {category}/{slug}.md!"))?)?;
+        let html = to_html_with_options(&source, &opts).unwrap();
 
         Ok(Article {
             title: meta.title,
@@ -53,37 +44,81 @@ impl Article {
             week: meta.week,
             html,
             slug,
+            category,
         })
+    }
+
+    pub fn path(&self) -> String {
+        format!("/{}/{}", self.category, self.slug)
     }
 }
 
-static ARTICLES: OnceCell<Vec<Article>> = OnceCell::const_new();
+#[derive(Clone)]
+pub struct Category {
+    pub name: String,
+    pub display_name: String,
+    pub articles: Vec<Article>,
+}
 
-pub async fn get_articles() -> Result<&'static Vec<Article>> {
-    ARTICLES
+static CATEGORIES: OnceCell<Vec<Category>> = OnceCell::const_new();
+
+pub async fn get_categories() -> Result<&'static Vec<Category>> {
+    CATEGORIES
         .get_or_try_init(|| async {
-            let mut articles = Vec::new();
+            let mut categories = Vec::new();
             let mut entries = fs::read_dir("content").await?;
 
             while let Some(entry) = entries.next_entry().await? {
                 let path = entry.path();
-
-                if path.extension().and_then(|s| s.to_str()) != Some("md") {
+                if !path.is_dir() {
                     continue;
                 }
 
-                let slug = path
-                    .file_stem()
+                let category_name = path
+                    .file_name()
                     .and_then(|s| s.to_str())
                     .unwrap()
                     .to_string();
 
-                articles.push(Article::from_slug(slug).await?);
+                let display_name = category_name
+                    .chars()
+                    .next()
+                    .map(|c| c.to_uppercase().to_string() + &category_name[1..])
+                    .unwrap_or_default();
+
+                let mut articles = Vec::new();
+                let mut sub_entries = fs::read_dir(&path).await?;
+
+                while let Some(sub_entry) = sub_entries.next_entry().await? {
+                    let sub_path = sub_entry.path();
+                    if sub_path.extension().and_then(|s| s.to_str()) != Some("md") {
+                        continue;
+                    }
+
+                    let slug = sub_path
+                        .file_stem()
+                        .and_then(|s| s.to_str())
+                        .unwrap()
+                        .to_string();
+
+                    articles.push(Article::from_path(category_name.clone(), slug).await?);
+                }
+
+                articles.sort_by(|a, b| {
+                    a.week.unwrap_or(usize::MAX).cmp(&b.week.unwrap_or(usize::MAX))
+                        .then_with(|| a.title.cmp(&b.title))
+                });
+
+                categories.push(Category {
+                    name: category_name,
+                    display_name,
+                    articles,
+                });
             }
 
-            articles.sort_by_key(|a| a.week);
+            categories.sort_by(|a, b| a.display_name.cmp(&b.display_name));
 
-            Ok(articles)
+            Ok(categories)
         })
         .await
 }
@@ -92,5 +127,5 @@ pub async fn get_articles() -> Result<&'static Vec<Article>> {
 struct Frontmatter {
     title: String,
     description: String,
-    week: usize,
+    week: Option<usize>,
 }

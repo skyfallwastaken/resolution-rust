@@ -3,26 +3,59 @@
 {% block title %}{{ article.title }} - Resolution Rust{% endblock %}
 
 {% block content %}
-    <a href="/" class="fixed top-6 left-6 inline-flex items-center gap-2 text-subtle transition hover:text-text">
-        <span aria-hidden="true">←</span> Back
-    </a>
-    <div class="prose lg:prose-lg prose container px-6 sm:px-0 max-w-3xl mx-auto my-24">
-        <h1 class="mb-0!">{{ article.title }}</h1>
-        <p>{{ article.description }}</p>
-        <hr/>
-
-        {{ article.html|safe }}
-
-        <div class="bg-surface px-6 py-8 rounded-md border border-muted/20 text-center">
-            <h2 class="my-0!">Ready to submit?</h2>
-            <p>We'll take you to the Resolution site to get it shipped!</p>
-            <a
-                href="https://resolution.hackclub.com/app/pathway/rust/week/{{ article.week }}/ship"
-                class="block bg-iris px-4 py-3 rounded-xl border border-subtle text-base no-underline transition hover:brightness-115 hover:border-iris/60"
-                target="_blank"
-            >
-                let's ship it!
+    <div class="flex min-h-screen">
+        <aside class="hidden lg:flex w-64 shrink-0 flex-col border-r border-highlight-med bg-surface px-4 py-8 overflow-y-auto fixed top-0 left-0 h-full z-20">
+            <a href="/" class="mb-8 inline-flex items-center gap-2 text-sm font-semibold text-iris transition hover:text-text">
+                <span aria-hidden="true">←</span> Home
             </a>
+
+            {% for category in categories %}
+                <div class="mb-6">
+                    <h3 class="mb-2 font-mono text-xs uppercase tracking-wider text-muted">{{ category.display_name }}</h3>
+                    <ul class="space-y-1 list-none p-0">
+                        {% for cat_article in category.articles %}
+                            <li>
+                                <a
+                                    href="{{ cat_article.path() }}"
+                                    class="block rounded-lg px-3 py-2 text-sm transition {% if cat_article.slug == article.slug && cat_article.category == article.category %}bg-iris/15 text-iris font-medium{% else %}text-subtle hover:text-text hover:bg-highlight-low{% endif %}"
+                                >
+                                    {% if cat_article.week.is_some() %}
+                                        <span class="font-mono text-xs text-muted mr-1">0{{ cat_article.week.unwrap() }}</span>
+                                    {% endif %}
+                                    {{ cat_article.title }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endfor %}
+        </aside>
+
+        <div class="flex-1 lg:ml-64">
+            <a href="/" class="lg:hidden fixed top-6 left-6 inline-flex items-center gap-2 text-subtle transition hover:text-text z-10">
+                <span aria-hidden="true">←</span> Back
+            </a>
+            <div class="prose lg:prose-lg prose container px-6 sm:px-0 max-w-3xl mx-auto my-24">
+                <h1 class="mb-0!">{{ article.title }}</h1>
+                <p>{{ article.description }}</p>
+                <hr/>
+
+                {{ article.html|safe }}
+
+                {% if article.week.is_some() %}
+                    <div class="bg-surface px-6 py-8 rounded-md border border-muted/20 text-center">
+                        <h2 class="my-0!">Ready to submit?</h2>
+                        <p>We'll take you to the Resolution site to get it shipped!</p>
+                        <a
+                            href="https://resolution.hackclub.com/app/pathway/rust/week/{{ article.week.unwrap() }}/ship"
+                            class="block bg-iris px-4 py-3 rounded-xl border border-subtle text-base no-underline transition hover:brightness-115 hover:border-iris/60"
+                            target="_blank"
+                        >
+                            let's ship it!
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
         </div>
     </div>
 {% endblock %}

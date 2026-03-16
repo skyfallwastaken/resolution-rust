@@ -14,7 +14,7 @@ mod app_error;
 mod content;
 
 use app_error::AppError;
-use content::Article;
+use content::{Article, Category};
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -23,7 +23,7 @@ async fn main() -> Result<()> {
 
     let app = Router::new()
         .route("/", get(index))
-        .route("/{slug}", get(show_article))
+        .route("/{category}/{slug}", get(show_article))
         .route("/static/{*file}", get(static_handler))
         .layer(LiveReloadLayer::new());
 
@@ -39,24 +39,29 @@ async fn main() -> Result<()> {
 #[template(path = "content.jinja")]
 struct ArticleTemplate {
     article: Article,
+    categories: Vec<Category>,
 }
 
 #[derive(Template, WebTemplate)]
 #[template(path = "index.jinja")]
 struct IndexTemplate {
-    articles: Vec<Article>,
+    categories: Vec<Category>,
 }
 
-async fn show_article(Path(slug): Path<String>) -> Result<ArticleTemplate, AppError> {
-    let article = Article::from_slug(slug).await?;
-    Ok(ArticleTemplate { article })
+async fn show_article(
+    Path((category, slug)): Path<(String, String)>,
+) -> Result<ArticleTemplate, AppError> {
+    let article = Article::from_path(category, slug).await?;
+    let categories = content::get_categories().await?.clone();
+    Ok(ArticleTemplate {
+        article,
+        categories,
+    })
 }
 
 async fn index() -> Result<IndexTemplate, AppError> {
-    let articles = content::get_articles().await?;
-    Ok(IndexTemplate {
-        articles: articles.to_vec(),
-    })
+    let categories = content::get_categories().await?.clone();
+    Ok(IndexTemplate { categories })
 }
 
 #[derive(rust_embed::Embed)]
