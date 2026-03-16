@@ -18,7 +18,7 @@ Unlike last week, this guide is a checklist rather than a step-by-step tutorial.
 
 ## Using Hackatime (+ using AI)
 
-For this week onwards, you can use either [Lapse](https://lapse.hackclub.com) or the regular Hackatime plugin. Please don't use AI whilst working on these workshops - this includes for research. The [#resolution-rust Slack channel](https://hackclub.enterprise.slack.com/archives/C0AFY7A312P) is a great place to ask for help!
+For this week, please use [Lapse](https://lapse.hackclub.com) unless you've shared your idea with me and I've given permission for you to use a normal Hackatime plugin. Additionally, don't use AI whilst working on these workshops - this includes for research. The [#resolution-rust Slack channel](https://hackclub.enterprise.slack.com/archives/C0AFY7A312P) is a great place to ask for help!
 
 ## Getting help
 
