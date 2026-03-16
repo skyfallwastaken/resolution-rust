@@ -40,6 +40,15 @@
                 <p>{{ article.description }}</p>
                 <hr/>
 
+                {% if article.prize.is_some() %}
+                    {% let prize = article.prize.as_ref().unwrap() %}
+                    <div class="not-prose bg-love/10 border border-love/30 rounded-lg px-6 py-5 mb-8">
+                        <p class="text-love font-semibold text-lg mb-1">Prize: {{ prize.title }}</p>
+                        <p class="text-subtle text-sm m-0!">{{ prize.description }}</p>
+                        <p class="text-subtle text-xs m-0!">+ one of eight <b>access passes</b> you'll need to receive the grand prize.</p>
+                    </div>
+                {% endif %}
+
                 {{ article.html|safe }}
 
                 {% if article.week.is_some() %}

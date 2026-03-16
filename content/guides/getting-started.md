@@ -2,6 +2,10 @@
 title: "Getting started"
 description: "Install Rust, learn how projects are structured, and make a basic HN top story viewer."
 week: 1
+
+prize:
+  title: "Rust/Linux/Hack Club stickers + postcard"
+  description: "A sh*tton of stickers and a postcard from Hack Club."
 ---
 
 Hello and welcome to the first week of the Resolution Rust pathway! By the end of the pathway, you'll be able to make projects in Rust, understand the "Rust way of thinking" and the ecosystem behind it, and make something useful by yourself.

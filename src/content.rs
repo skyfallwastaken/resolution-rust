@@ -9,6 +9,7 @@ pub struct Article {
     pub description: String,
     pub html: String,
     pub week: Option<usize>,
+    pub prize: Option<Prize>,
     pub slug: String,
     pub category: String,
 }
@@ -42,6 +43,7 @@ impl Article {
             title: meta.title,
             description: meta.description,
             week: meta.week,
+            prize: meta.prize,
             html,
             slug,
             category,
@@ -128,4 +130,11 @@ struct Frontmatter {
     title: String,
     description: String,
     week: Option<usize>,
+    prize: Option<Prize>,
+}
+
+#[derive(Clone, Deserialize)]
+pub struct Prize {
+    pub title: String,
+    pub description: String,
 }

@@ -2,6 +2,10 @@
 title: "Building a GUI app"
 description: "Make a desktop app with egui, then ship it on GitHub Releases using a workflow."
 week: 2
+
+prize:
+  title: "Ferris Shirt"
+  description: "A super comfy Ferris the Crab shirt! Unlikely to have customs fees, but you should still be prepared."
 ---
 
 Welcome back! If you haven't done the first week yet, [go do that first](/guides/getting-started).
