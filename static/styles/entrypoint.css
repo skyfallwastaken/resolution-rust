@@ -2,7 +2,8 @@
 
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
-@source "./templates";
+@source "../../templates";
+@source "../../content";
 
 @theme {
   --font-sans: "Plus Jakarta Sans", system-ui, sans-serif;
