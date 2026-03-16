@@ -8,6 +8,7 @@ use axum::{
     routing::get,
 };
 use color_eyre::Result;
+use std::sync::LazyLock;
 use tower_livereload::LiveReloadLayer;
 
 mod app_error;
@@ -40,12 +41,14 @@ async fn main() -> Result<()> {
 struct ArticleTemplate {
     article: Article,
     categories: Vec<Category>,
+    css_asset_version: &'static str,
 }
 
 #[derive(Template, WebTemplate)]
 #[template(path = "index.jinja")]
 struct IndexTemplate {
     categories: Vec<Category>,
+    css_asset_version: &'static str,
 }
 
 async fn show_article(
@@ -56,17 +59,40 @@ async fn show_article(
     Ok(ArticleTemplate {
         article,
         categories,
+        css_asset_version: css_asset_version(),
     })
 }
 
 async fn index() -> Result<IndexTemplate, AppError> {
     let categories = content::get_categories().await?.clone();
-    Ok(IndexTemplate { categories })
+    Ok(IndexTemplate {
+        categories,
+        css_asset_version: css_asset_version(),
+    })
 }
 
 #[derive(rust_embed::Embed)]
 #[folder = "static/"]
 struct Asset;
+
+static CSS_ASSET_VERSION: LazyLock<String> = LazyLock::new(|| {
+    Asset::get("styles/tailwind.css")
+        .map(|content| format!("{:016x}", fnv1a_64(content.data.as_ref())))
+        .unwrap_or_else(|| "dev".to_string())
+});
+
+fn css_asset_version() -> &'static str {
+    CSS_ASSET_VERSION.as_str()
+}
+
+fn fnv1a_64(bytes: &[u8]) -> u64 {
+    let mut hash = 0xcbf29ce484222325_u64;
+    for byte in bytes {
+        hash ^= u64::from(*byte);
+        hash = hash.wrapping_mul(0x100000001b3);
+    }
+    hash
+}
 
 pub struct StaticFile<T>(pub T);
 
