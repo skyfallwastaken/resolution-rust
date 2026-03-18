@@ -566,7 +566,8 @@ Useful links:
 - 📖 [GitHub Actions quickstart](https://docs.github.com/en/actions/writing-workflows/quickstart)
 - 📖 [`actions/upload-artifact`](https://github.com/actions/upload-artifact) for uploading build outputs
 - 📖 [`softprops/action-gh-release`](https://github.com/softprops/action-gh-release) for creating releases with attached binaries
-- 📖 [Rust CI with GitHub Actions](https://github.com/marketplace/actions/build-and-upload-rust-binary-to-github-releases) for general Rust CI tips
+- 📖 [Rust CI with GitHub Actions](https://blog.logrocket.com/optimizing-ci-cd-pipelines-rust-projects/) for general Rust CI tips
+- 📖 [Some optimization tips for Rust CI](https://blog.logrocket.com/optimizing-ci-cd-pipelines-rust-projects/)
 
 A basic workflow looks something like: on push to a tag (e.g. `v*`), run `cargo build --release`, then upload the resulting binary from `target/release/`.
 
