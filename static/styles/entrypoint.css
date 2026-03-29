@@ -93,6 +93,59 @@ pre[class*="language-"] > code {
   --tw-prose-invert-td-borders: var(--color-muted);
 }
 
+/* Collapsible code blocks (>16 lines) */
+.code-collapsible {
+  position: relative;
+  max-height: calc(16 * 1.7em + 2rem);
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.code-collapsible.is-expanded {
+  max-height: none;
+}
+
+.code-collapsible:not(.is-expanded)::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4rem;
+  background: linear-gradient(transparent, var(--color-surface));
+  pointer-events: none;
+  border-radius: 0 0 0.75rem 0.75rem;
+}
+
+.code-expand-btn {
+  display: block;
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: -1px;
+  border: 1px solid var(--color-highlight-med);
+  border-top: none;
+  border-radius: 0 0 0.75rem 0.75rem;
+  background: var(--color-surface);
+  color: var(--color-subtle);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.code-expand-btn:hover {
+  color: var(--color-text);
+}
+
+pre:has(+ .code-expand-btn) {
+  border-radius: 0.75rem 0.75rem 0 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.code-expand-btn + * {
+  margin-top: 1.25em !important;
+}
+
 /* Page transitions */
 html.is-changing .transition-fade {
   transition: opacity 0.125s;

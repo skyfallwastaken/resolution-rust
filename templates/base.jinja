@@ -54,10 +54,37 @@
         plugins: [new SwupHeadPlugin()],
       });
 
+      const LINE_THRESHOLD = 16;
+
+      const collapseCodeBlocks = () => {
+        document.querySelectorAll("pre > code").forEach((code) => {
+          const pre = code.parentElement;
+          if (pre.classList.contains("code-collapsible")) return;
+
+          const lineCount = code.textContent.split("\n").length - 1;
+          if (lineCount <= LINE_THRESHOLD) return;
+
+          pre.classList.add("code-collapsible");
+
+          const btn = document.createElement("button");
+          btn.className = "code-expand-btn";
+          btn.textContent = `▼ Show all ${lineCount} lines`;
+          btn.addEventListener("click", () => {
+            const expanded = pre.classList.toggle("is-expanded");
+            btn.textContent = expanded
+              ? "▲ Collapse"
+              : `▼ Show all ${lineCount} lines`;
+          });
+
+          pre.after(btn);
+        });
+      };
+
       const highlight = () => {
         if (window.Prism) {
           window.Prism.highlightAll();
         }
+        collapseCodeBlocks();
       };
 
       window.addEventListener("load", highlight);
