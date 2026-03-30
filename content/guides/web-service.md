@@ -122,7 +122,11 @@ use axum::{
     routing::{delete, get, post},
 };
 use bollard::Docker;
-use bollard::container::{CreateContainerOptions, ListContainersOptions, RemoveContainerOptions, StopContainerOptions, Config};
+use bollard::models::ContainerCreateBody;
+use bollard::query_parameters::{
+    CreateContainerOptionsBuilder, ListContainersOptions, RemoveContainerOptionsBuilder,
+    StopContainerOptionsBuilder,
+};
 use serde::{Deserialize, Serialize};
 use sqlx::sqlite::SqlitePool;
 use std::sync::Arc;
@@ -198,8 +202,10 @@ async fn list_containers(
 ) -> Result<Json<Vec<ContainerInfo>>, (StatusCode, Json<ApiResponse>)> {
     check_auth(&headers, &state.api_key)?;
 
-    let mut options = ListContainersOptions::<String>::default();
-    options.all = true;
+    let options = ListContainersOptions {
+        all: true,
+        ..Default::default()
+    };
 
     let containers = state
         .docker
@@ -242,12 +248,11 @@ async fn create_container(
 ) -> Result<(StatusCode, Json<ApiResponse>), (StatusCode, Json<ApiResponse>)> {
     check_auth(&headers, &state.api_key)?;
 
-    let options = CreateContainerOptions {
-        name: body.name.clone(),
-        platform: None,
-    };
+    let options = CreateContainerOptionsBuilder::new()
+        .name(&body.name)
+        .build();
 
-    let config = Config {
+    let config = ContainerCreateBody {
         image: Some(body.image),
         ..Default::default()
     };
@@ -267,7 +272,7 @@ async fn create_container(
 
     state
         .docker
-        .start_container::<String>(&body.name, None)
+        .start_container(&body.name, None)
         .await
         .map_err(|e| {
             (
@@ -295,9 +300,9 @@ async fn stop_container(
 ) -> Result<Json<ApiResponse>, (StatusCode, Json<ApiResponse>)> {
     check_auth(&headers, &state.api_key)?;
 
-    let options = StopContainerOptions {
-        t: 10,
-    };
+    let options = StopContainerOptionsBuilder::new()
+        .t(10)
+        .build();
 
     state
         .docker
@@ -326,10 +331,9 @@ async fn remove_container(
 ) -> Result<Json<ApiResponse>, (StatusCode, Json<ApiResponse>)> {
     check_auth(&headers, &state.api_key)?;
 
-    let options = RemoveContainerOptions {
-        force: true,
-        ..Default::default()
-    };
+    let options = RemoveContainerOptionsBuilder::new()
+        .force(true)
+        .build();
 
     state
         .docker
@@ -406,8 +410,8 @@ async fn main() {
         .route("/health", get(health))
         .route("/containers", get(list_containers))
         .route("/containers", post(create_container))
-        .route("/containers/:name/stop", post(stop_container))
-        .route("/containers/:name", delete(remove_container))
+        .route("/containers/{name}/stop", post(stop_container))
+        .route("/containers/{name}", delete(remove_container))
         .route("/logs", get(get_logs))
         .with_state(state);
 
@@ -529,12 +533,14 @@ The return type `Result<Json<Vec<ContainerInfo>>, (StatusCode, Json<ApiResponse>
 The bollard calls are fairly straightforward:
 
 ```rust
-let mut options = ListContainersOptions::<String>::default();
-    options.all = true;
+let options = ListContainersOptions {
+    all: true,
+    ..Default::default()
+};
 let containers = state.docker.list_containers(Some(options)).await.map_err(|e| { ... })?;
 ```
 
-The builder pattern (`...Builder::default().option(value).build()`) is common in Rust for constructing config objects. `.all(true)` means "show all containers, not just running ones". The `.await` is because this is an async operation (it talks to Docker over a socket), and `.map_err()` converts bollard's error type into our API error format.
+The builder pattern (`...Builder::new().option(value).build()`) is common in Rust for constructing config objects. `all: true` means "show all containers, not just running ones". The `.await` is because this is an async operation (it talks to Docker over a socket), and `.map_err()` converts bollard's error type into our API error format.
 
 ### The create endpoint
 
@@ -551,7 +557,7 @@ Notice the third parameter: `Json(body): Json<CreateContainerRequest>`. This tel
 The handler creates a container and then immediately starts it:
 
 ```rust
-let config = Config {
+let config = ContainerCreateBody {
     image: Some(body.image),
     ..Default::default()
 };
@@ -610,8 +616,8 @@ let app = Router::new()
     .route("/health", get(health))
     .route("/containers", get(list_containers))
     .route("/containers", post(create_container))
-    .route("/containers/:name/stop", post(stop_container))
-    .route("/containers/:name", delete(remove_container))
+    .route("/containers/{name}/stop", post(stop_container))
+    .route("/containers/{name}", delete(remove_container))
     .route("/logs", get(get_logs))
     .with_state(state);
 ```
@@ -674,7 +680,7 @@ Let's recap:
 - How to make routes in Axum, and what the extractor pattern is (declaring what your handler needs in its function signature, and letting Axum provide the deets to your function)
 - sqlx: connecting to a database, creating tables, inserting rows and querying data
 - How to check headers and return proper HTTP error codes
-- The builder pattern: using `...Builder::default().option(value).build()` to construct configuration objects
+- The builder pattern: using `...Builder::new().option(value).build()` to construct configuration objects
 - Safely sharing data across async tasks using `Arc`!
 
 ## Now build your own!
