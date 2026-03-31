@@ -1,4 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap");
+@import url("https://fonts.cdnfonts.com/css/metropolis-2");
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap");
 
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
@@ -6,8 +7,16 @@
 @source "../../content";
 
 @theme {
-  --font-sans: "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-sans: "Metropolis", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", monospace;
+}
+
+body {
+  font-weight: 500;
+}
+
+em {
+  font-weight: 600;
 }
 
 pre,
@@ -40,21 +49,21 @@ pre[class*="language-"] > code {
 }
 
 @theme {
-  --color-base: hsl(230deg, 25%, 9%);
-  --color-surface: hsl(228deg, 22%, 12%);
-  --color-overlay: hsl(226deg, 20%, 16%);
-  --color-muted: hsl(225deg, 14%, 40%);
-  --color-subtle: hsl(223deg, 16%, 56%);
-  --color-text: hsl(220deg, 40%, 93%);
-  --color-love: hsl(355deg, 75%, 65%);
-  --color-gold: hsl(40deg, 90%, 68%);
-  --color-rose: hsl(15deg, 70%, 78%);
-  --color-pine: hsl(175deg, 50%, 40%);
-  --color-foam: hsl(170deg, 45%, 68%);
-  --color-iris: hsl(220deg, 65%, 72%);
-  --color-highlight-low: hsl(228deg, 20%, 13%);
-  --color-highlight-med: hsl(226deg, 16%, 22%);
-  --color-highlight-high: hsl(224deg, 14%, 32%);
+  --color-base: hsl(40deg, 40%, 95%);
+  --color-surface: hsl(42deg, 35%, 90%);
+  --color-overlay: hsl(38deg, 30%, 85%);
+  --color-muted: hsl(200deg, 12%, 55%);
+  --color-subtle: hsl(200deg, 15%, 42%);
+  --color-text: hsl(210deg, 30%, 18%);
+  --color-love: hsl(0deg, 60%, 48%);
+  --color-gold: hsl(35deg, 85%, 52%);
+  --color-rose: hsl(16deg, 70%, 58%);
+  --color-pine: hsl(175deg, 50%, 32%);
+  --color-foam: hsl(182deg, 45%, 42%);
+  --color-iris: hsl(205deg, 60%, 45%);
+  --color-highlight-low: hsl(40deg, 30%, 91%);
+  --color-highlight-med: hsl(38deg, 25%, 82%);
+  --color-highlight-high: hsl(36deg, 20%, 72%);
 }
 
 @utility prose {
@@ -71,7 +80,7 @@ pre[class*="language-"] > code {
   --tw-prose-captions: var(--color-muted);
   --tw-prose-code: var(--color-love);
   --tw-prose-pre-code: var(--color-text);
-  --tw-prose-pre-bg: rgb(35, 33, 54);
+  --tw-prose-pre-bg: var(--color-surface);
   --tw-prose-th-borders: var(--color-highlight-med);
   --tw-prose-td-borders: var(--color-highlight-low);
 

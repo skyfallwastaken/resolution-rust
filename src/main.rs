@@ -9,8 +9,6 @@ use axum::{
 };
 use color_eyre::Result;
 use std::sync::LazyLock;
-use tower_livereload::LiveReloadLayer;
-
 mod app_error;
 mod content;
 
@@ -22,11 +20,15 @@ async fn main() -> Result<()> {
     tracing_subscriber::fmt::init();
     color_eyre::install()?;
 
-    let app = Router::new()
+    let mut app = Router::new()
         .route("/", get(index))
         .route("/{category}/{slug}", get(show_article))
-        .route("/static/{*file}", get(static_handler))
-        .layer(LiveReloadLayer::new());
+        .route("/static/{*file}", get(static_handler));
+
+    #[cfg(feature = "dev")]
+    {
+        app = app.layer(tower_livereload::LiveReloadLayer::new());
+    }
 
     let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
     axum::serve(listener, app).await.unwrap();

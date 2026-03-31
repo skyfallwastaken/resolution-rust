@@ -14,6 +14,9 @@ markdown = "1.0.0"
 color-eyre = "0.6.5"
 serde = { version = "1.0.228", features = ["derive"] }
 serde_yaml = "0.9.34"
-tower-livereload = "0.10.3"
+tower-livereload = { version = "0.10.3", optional = true }
 rust-embed = "8.11.0"
 mime_guess = "2.0.5"
+
+[features]
+dev = ["tower-livereload"]

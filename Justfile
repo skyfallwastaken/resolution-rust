@@ -1,5 +1,5 @@
 dev:
-    cargo watch -x run -w templates -w src -w content -w static
+    cargo watch -x 'run --features dev' -w templates -w src -w content -w static
 
 tailwind-watch:
 	bun tailwindcss -i ./static/styles/entrypoint.css -o ./static/styles/tailwind.css --watch
