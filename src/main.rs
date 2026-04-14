@@ -30,7 +30,9 @@ async fn main() -> Result<()> {
         app = app.layer(tower_livereload::LiveReloadLayer::new());
     }
 
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
+    let listener = tokio::net::TcpListener::bind("0.0.0.0:43210")
+        .await
+        .unwrap();
     axum::serve(listener, app).await.unwrap();
 
     tracing::debug!("and we're off!");

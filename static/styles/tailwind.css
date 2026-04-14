@@ -712,6 +712,9 @@
   .block {
     display: block;
   }
+  .contents {
+    display: contents;
+  }
   .flex {
     display: flex;
   }
@@ -1322,6 +1325,25 @@ code, code[class*="language-"] {
 }
 pre[class*="language-"] > code {
   background: none !important;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-base: hsl(249deg, 22%, 12%);
+    --color-surface: hsl(247deg, 23%, 15%);
+    --color-overlay: hsl(248deg, 21%, 19%);
+    --color-muted: hsl(249deg, 12%, 47%);
+    --color-subtle: hsl(248deg, 15%, 61%);
+    --color-text: hsl(245deg, 50%, 91%);
+    --color-love: hsl(343deg, 76%, 68%);
+    --color-gold: hsl(35deg, 88%, 72%);
+    --color-rose: hsl(2deg, 66%, 75%);
+    --color-pine: hsl(197deg, 49%, 60%);
+    --color-foam: hsl(189deg, 43%, 73%);
+    --color-iris: hsl(267deg, 57%, 78%);
+    --color-highlight-low: hsl(245deg, 22%, 17%);
+    --color-highlight-med: hsl(249deg, 15%, 28%);
+    --color-highlight-high: hsl(248deg, 13%, 36%);
+  }
 }
 .code-collapsible {
   position: relative;
