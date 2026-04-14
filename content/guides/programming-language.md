@@ -85,11 +85,11 @@ fn main() {
 }
 ```
 
-This is a build script. Cargo runs it before compiling your code. It scans your `src/` directory for `.lalrpop` files, generates corresponding `.rs` files and puts them in Cargo's output directory. The `process_root` function is smart enough to only regenerate files when the grammar has changed.
+This is a build script. Cargo runs it before compiling your code. It scans your `src/` directory for `.lalrpop` files, generates corresponding `.rs` files and puts them in Cargo's output directory.
 
 ## The abstract syntax tree
 
-Before we write the grammar, we need to define the data structures that our parser will produce. An abstract syntax tree (AST) is a tree representation of your program's structure. Each node in the tree represents a construct in the source code.
+Before we write the grammar, we need to define the data structures that our parser will produce. An abstract syntax tree (AST) is a tree representation of your program's structure. Each "node" in the tree represents a construct in the source code.
 
 Create `src/ast.rs`:
 
@@ -130,6 +130,8 @@ pub enum Statement {
 Let's walk through what's here.
 
 `Expr` represents anything that produces a value. It can be a literal (number, string, boolean), a variable reference, a binary operation (like `1 + 2`) or a function call. The `BinOp` variant uses `Box<Expr>` because an expression can contain other expressions, and Rust needs to know the size of an enum at compile time. A `Box` is a pointer to heap-allocated data, so its size is always the same regardless of what it points to. Without `Box`, the compiler would complain that `Expr` has infinite size (an `Expr` contains an `Expr` which contains an `Expr`...).
+
+(Pro tip: you should try it without `Box` and see what happens!)
 
 `Op` lists the operators we support: arithmetic (`+`, `-`, `*`, `/`), comparison (`<`, `>`) and equality (`==`).
 
@@ -291,7 +293,7 @@ This is the classic way to encode operator precedence in a grammar. Each "level"
 3. `AddSub` handles `+` and `-`
 4. `MulDiv` handles `*` and `/` (highest precedence among operators)
 
-The parser works bottom-up, so `*` and `/` bind more tightly than `+` and `-`, which bind more tightly than comparisons. This means `1 + 2 * 3` parses as `1 + (2 * 3)`, not `(1 + 2) * 3`. Each level's fallback rule (e.g. `<e:MulDiv> => e`) passes through to the next level down. This is a standard technique used in virtually every parser generator.
+The parser works bottom-up, so `*` and `/` bind more tightly than `+` and `-`, which bind more tightly than comparisons. This means `1 + 2 * 3` parses as `1 + (2 * 3)`, not `(1 + 2) * 3`. In other words, we've implemented [BIDMAS.](https://www.bbc.co.uk/bitesize/articles/znm8cmn) Each level's fallback rule (e.g. `<e:MulDiv> => e`) passes through to the next level down. This is a standard technique used in virtually every parser generator.
 
 The left-recursive structure (`<l:AddSub> "+" <r:MulDiv>`) also gives us left-to-right evaluation. `1 - 2 - 3` parses as `(1 - 2) - 3`, not `1 - (2 - 3)`.
 
