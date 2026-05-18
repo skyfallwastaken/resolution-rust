@@ -65,7 +65,7 @@ If you'd rather figure out how to use Ratatui yourself (which I'd encourage doin
 
 If you want to go through a guide to help you learn it though, keep reading.
 
-<hr>
+---
 
 ## Example: building a GitHub PR comment viewer
 
