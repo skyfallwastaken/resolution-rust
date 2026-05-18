@@ -31,7 +31,7 @@ Ratatui is a Rust crate for drawing TUIs in the terminal. You give it a tree of 
 
 The mental model:
 
-```
+```rust
 loop {
     terminal.draw(|frame| {
         // describe what the screen looks like right now
