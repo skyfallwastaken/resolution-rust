@@ -8,6 +8,12 @@ prize:
   description: "An adorable plushie of Ferris the Crab <3"
 ---
 
+## This week is now closed
+
+We need to batch order the plushies, so this week is now closed.
+
+---
+
 Welcome to week 5! If you haven't done weeks 1 through 4 yet, please go back and finish those off first.
 
 This week, you'll be making a **terminal UI (TUI)** app using [ratatui](https://ratatui.rs). TUIs are apps that live entirely inside your terminal but feel like proper full-screen interfaces. Think `htop` or `lazygit`. They're great for developer tools because they boot up instantly, work over SSH (more useful than you may think), and, when done right, feel great to use.
